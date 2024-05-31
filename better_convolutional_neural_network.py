@@ -34,6 +34,7 @@ class ConvNeuralNetwork(nn.Module):
         return x
     
 # Pre-process the data
+# transform will be used to make the loaded datasets easier to read
 transform = transforms.Compose([
     transforms.Resize((28,28)),
     transforms.ToTensor(),
@@ -76,3 +77,19 @@ for epoch in range(NUM_EPOCHS):
 
     # Divide by to calculate average
     print(f'[{epoch + 1}] loss: {running_loss / n_total_steps:.3f}')
+
+# Now test it
+model.eval() # Switch to evaluation mode, which is better for testing than training
+correct = 0
+total = 0
+with torch.no_grad():
+    for images, labels in test_loader:
+        images: Tensor = images.to(DEVICE)
+        labels: Tensor = labels.to(DEVICE)
+
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print(f'Accuracy of the model on the 10000 test images: {100 * correct / total}%')
