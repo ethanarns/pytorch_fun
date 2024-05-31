@@ -3,9 +3,7 @@ import torch.nn as nn
 import torch.utils.data
 import torchvision
 import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
 from torch import Tensor
-import numpy as np
 
 if not torch.cuda.is_available():
     print("WARNING: Cuda not available! Calculations will be slower!")
