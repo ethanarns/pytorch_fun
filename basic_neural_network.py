@@ -52,6 +52,7 @@ class NeuralNet(nn.Module):
         # Linear layer (input) (in features, out feathers)
         self.l1 = nn.Linear(input_size, hidden_size)
         # Activation function (REctified Linear Unit)
+        # WP: "Calculates the output of the node based on individual inputs and their weights"
         self.relu = nn.ReLU()
         # Second Linear layer (hidden)
         # num classes is 10, because 10 digits
@@ -75,7 +76,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 ## Training ##
 # We usually have two for loops: the first iterates over epochs, the second iterates over the training loader
-n_total_steps = len(train_loader)
+n_total_steps = len(train_loader) # this is only used for debug, shows how many enumate over
 for epoch in range(NUM_EPOCHS):
     # Images are X, labels are Y
     for i, (images, labels) in enumerate(train_loader):
@@ -90,10 +91,11 @@ for epoch in range(NUM_EPOCHS):
         # calculate loss
         loss: Tensor = criterion(outputs,labels)
 
-        # backwards pass
+        # backwards pass, calculates the gradients
         loss.backward()
 
-        # optimize
+        # With Linear Regression, this is updating the weights
+        # This is what actually updates the model itself
         optimizer.step()
         # zero the gradients to prevent stacking
         optimizer.zero_grad()
@@ -108,7 +110,7 @@ with torch.no_grad():
     n_samples = len(test_loader.dataset)
 
     for images, labels in test_loader:
-        # flatten again
+        # flatten again. The -1 means "auto calculate"
         images: Tensor = images.reshape(-1, 28*28).to(DEVICE)
         labels: Tensor = labels.to(DEVICE)
 
