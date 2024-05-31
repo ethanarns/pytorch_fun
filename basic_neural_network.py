@@ -46,6 +46,7 @@ example_data, example_targets = next(examples)
 #     plt.imshow(example_data[i][0], cmap='gray')
 # plt.show()
 
+# A fully connected neural network with one hidden layer
 class NeuralNet(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes) -> None:
         super(NeuralNet, self).__init__() # Do the stuff in the module probably
