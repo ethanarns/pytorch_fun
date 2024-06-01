@@ -11,12 +11,11 @@ if not torch.cuda.is_available():
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Input data
-COLOR_CHANNELS = 1
-POOL_DIMS = 2
-IMG_DIMS = 28
+COLOR_CHANNELS = 1 # Grayscale means only 1 channel
+POOL_DIMS = 2 # Means 2x2
+IMG_DIMS = 28 # Images are 28x28 pixels
 CLASSES = 10 # 0-9
-# The image is 2x2 pooled twice
-IMG_POOLED_DIMS = int(IMG_DIMS / 2 / 2)
+IMG_POOLED_DIMS = int(IMG_DIMS / POOL_DIMS / POOL_DIMS) # The image is 2x2 pooled twice
 
 # Hyper-parameters
 NUM_EPOCHS = 10
@@ -34,6 +33,7 @@ class ConvNeuralNetwork(nn.Module):
         self.pool = nn.MaxPool2d(POOL_DIMS,POOL_DIMS)
         self.relu = nn.ReLU()
 
+        # Conv2d is a Convolutional Layer
         self.conv1 = nn.Conv2d(COLOR_CHANNELS,FILTERS_1,kernel_size=FILTER_DIMENSION,padding=FILTER_PADDING)
         self.conv2 = nn.Conv2d(FILTERS_1, FILTERS_2, kernel_size=FILTER_DIMENSION, padding=FILTER_PADDING)
         self.fc1 = nn.Linear(FILTERS_2*IMG_POOLED_DIMS*IMG_POOLED_DIMS,FC_FEATURES)
